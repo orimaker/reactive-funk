@@ -17,11 +17,13 @@ public class BookService {
     public BookService() {
         bookStore = new HashMap<>();
         String booksJSON = """
-                [{"id":1,"title":"Step Up 2 the Streets","author":"Yelena Chasle","isbn":1},
+                [
+                {"id":1,"title":"Step Up 2 the Streets","author":"Yelena Chasle","isbn":1},
                 {"id":2,"title":"Idiots and Angels","author":"Desirae Taaffe","isbn":2},
                 {"id":3,"title":"Boogeyman","author":"Fran Splevins","isbn":3},
                 {"id":4,"title":"Albuquerque","author":"Tabatha Panons","isbn":4},
-                {"id":5,"title":"Road to Morocco","author":"Abbi Eley","isbn":5}]""";
+                {"id":5,"title":"Road to Morocco","author":"Abbi Eley","isbn":5}
+                ]""";
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -35,16 +37,16 @@ public class BookService {
 
 
     public Mono<Book> getBookById(int id) {
-//        return Mono.justOrEmpty(bookStore.get(id))
-//                .switchIfEmpty(Mono.error(new IllegalArgumentException()));
+        return Mono.justOrEmpty(bookStore.get(id))
+                .switchIfEmpty(Mono.error(new IllegalArgumentException()));
 
-        // TODO instead of these
-        return Mono.just(id)
-                .map(bookId -> bookStore.get(bookId))
-                .flatMap(book -> {
-                    if (book == null) return Mono.error(new IllegalArgumentException("Invalid book id."));
-                    return Mono.just(book);
-                });
+//        // TODO instead of these
+//        return Mono.just(id)
+//                .map(bookId -> bookStore.get(bookId))
+//                .flatMap(book -> {
+//                    if (book == null) return Mono.error(new IllegalArgumentException("Invalid book id."));
+//                    return Mono.just(book);
+//                });
         //.cast .handle
 //                .map(book -> {
 //                    if (book == null) throw new IllegalArgumentException("Invalid book id.");

@@ -18,7 +18,7 @@ public class ShelveRouter {
         return RouterFunctions.route()
                 .path("shelve",
                         p -> p.nest(accept(MediaType.APPLICATION_JSON),
-                                b -> b.GET("", shelveHandler::getRandomShelves)
+                                b -> b.GET("", shelveHandler::getRandomShelve)
                                         .GET("/all", shelveHandler::getAllShelves)
                                         .GET("/{id:[0-9]+}", shelveHandler::findById)
                                         .GET("/{id:[0-9]+}/books", shelveHandler::getShelveBooks)

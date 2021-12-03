@@ -56,9 +56,9 @@ public class ShelveHandler {
                 .body(this.bookService.getRandomBook().concatWith(this.bookService.getRandomBook()), Book.class);
     }
 
-    public Mono<ServerResponse> getRandomShelves(ServerRequest serverRequest) {
+    public Mono<ServerResponse> getRandomShelve(ServerRequest serverRequest) {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Flux.just(new Shelve()), Shelve.class);
+                .body(Mono.just(new Shelve()), Shelve.class);
     }
 }
