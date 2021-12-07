@@ -21,4 +21,6 @@ public interface BookInterface {
     Flux<ServerSentEvent<Book>> randomBookStream();
 
     Flux<ServerSentEvent<Mono<Book>>> randomMonoBookStream();
+
+    Flux<ServerSentEvent<Book>> randomBookStreamCompleted();
 }

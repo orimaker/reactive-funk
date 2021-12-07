@@ -20,9 +20,9 @@ public class ShelveRouter {
                         p -> p.nest(accept(MediaType.APPLICATION_JSON),
                                 b -> b.GET("", shelveHandler::getRandomShelve)
                                         .GET("/all", shelveHandler::getAllShelves)
-                                        .GET("/{id:[0-9]+}", shelveHandler::findById)
-                                        .GET("/{id:[0-9]+}/books", shelveHandler::getShelveBooks)
-                                        .PUT("/{id:[0-9]+}/books", shelveHandler::addBookToShelve)
+                                        .GET("/{shelveId:[0-9]+}", shelveHandler::findById)
+                                        .GET("/{shelveId:[0-9]+}/books", shelveHandler::getShelveBooks)
+                                        .PUT("/{shelveId:[0-9]+}/books", shelveHandler::addBookToShelve)
                                         .GET("/{name:[a-z]+}", shelveHandler::findByName)
                                         .PUT(shelveHandler::createShelve))
                 ).build();

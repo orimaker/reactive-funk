@@ -1,5 +1,6 @@
 package com.roitraining.demos.reactivefunk.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Shelve {
@@ -25,6 +26,9 @@ public class Shelve {
     }
 
     public List<Book> getBooks() {
+        if (books == null) {
+            books = new ArrayList<>();
+        }
         return books;
     }
 

@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequestMapping(path = "book", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BookController implements BookInterface {
 
-    private BookService bookService;
+    private final BookService bookService;
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -66,14 +66,33 @@ public class BookController implements BookInterface {
     }
 
     @Override
-    @GetMapping("randomBookStream")
+    @GetMapping("bookStreamError")
     public Flux<ServerSentEvent<Book>> randomBookStream() {
         var infiniteRandomBookPublisher = Flux.interval(Duration.ofSeconds(1))
                 .flatMap(tick -> this.bookService.getRandomBook());
         return Flux.interval(Duration.ofSeconds(2))
                 .flatMap(s -> s == 5 ? Mono.error(new IllegalArgumentException("error")) : Mono.just(s)
                 )
-                .onErrorReturn(-1l)
+                //.onErrorReturn(-1l)
+                .onErrorStop()
+                .zipWith(infiniteRandomBookPublisher,
+                        (tick, book) -> ServerSentEvent.<Book>builder()
+                                .id("randomBookStream + " + tick)
+                                .event(UUID.randomUUID().toString())
+                                .data(book)
+                                .build()
+                )
+                .log();
+
+    }
+
+    @Override
+    @GetMapping("bookStreamCompleted")
+    public Flux<ServerSentEvent<Book>> randomBookStreamCompleted() {
+        var infiniteRandomBookPublisher = Flux.interval(Duration.ofSeconds(1))
+                .flatMap(tick -> this.bookService.getRandomBook());
+        return Flux.interval(Duration.ofSeconds(2))
+                .take(5)
                 .zipWith(infiniteRandomBookPublisher,
                         (tick, book) -> ServerSentEvent.<Book>builder()
                                 .id("randomBookStream + " + tick)
